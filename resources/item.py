@@ -16,10 +16,12 @@ blp = Blueprint("items", __name__ ,description="operations on items")
 class ItemList(MethodView):
     
     @blp.response(200,ItemSchema(many=True))
+    @jwt_required()
     def get(self):
         return ItemModel.query.all()
 
     @blp.arguments(ItemSchema)
+    @jwt_required()
     @blp.response(201,ItemSchema)
     def post(self,item_data):
         item = ItemModel(**item_data)
@@ -39,10 +41,11 @@ class ItemList(MethodView):
 class Item(MethodView):
     
     @blp.response(200,ItemSchema)
+    @jwt_required()
     def get(self,item_id):
         item = ItemModel.query.get_or_404(item_id)
         return item
-    
+    @jwt_required()
     def delete(self,item_id):
         item = ItemModel.query.get_or_404(item_id)
         db.session.delete(item)
