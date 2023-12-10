@@ -1,9 +1,9 @@
 import sys
-import uuid
 import traceback
-from flask import request
+
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
+from flask_jwt_extended import jwt_required
 from sqlalchemy.exc import SQLAlchemyError
 
 from db import db
@@ -35,7 +35,7 @@ class ItemList(MethodView):
         return item
 
 
-@blp.route("/item/<string:item_id>")
+@blp.route("/item/<int:item_id>")
 class Item(MethodView):
     
     @blp.response(200,ItemSchema)
